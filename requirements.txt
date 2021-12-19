@@ -1,0 +1,4 @@
+pydicom
+matplotlib
+opencv-python
+pandas
