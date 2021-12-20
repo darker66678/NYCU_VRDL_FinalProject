@@ -14,17 +14,15 @@ def convert(size, box):
     h = h/dh
     return (x, y, w, h)
 
-id_cache = None # modified by chialiang
+patientId = None 
 out_path = r'./data/labels/train/'
 data = pd.read_csv(r'./data/stage_2_train_labels.csv')
 for i in range(len(data)):
     target = data['Target'].iloc[i]
-    patientId = data['patientId'].iloc[i] # modified by chialiang
 
-    # modified by chialiang
     if(target):
-        if data['patientId'].iloc[i] != id_cache:
-            id_cache = data['patientId'].iloc[i]
+        if data['patientId'].iloc[i] != patientId:
+            patientId = data['patientId'].iloc[i]
             txt_outfile = open(out_path+patientId+'.txt', "w")
         x = data['x'].iloc[i]
         y = data['y'].iloc[i]
@@ -36,9 +34,11 @@ for i in range(len(data)):
             str(0) + " " + " ".join([str(i) for i in bbox]) + '\n')
 
 txt_outfile = open('./data/train.txt', "w")
+patientId = None
 for i in range(len(data)):
-    patientId = data['patientId'].iloc[i]
-    # relative to the path you exective train.py of yolov5
-    txt_outfile.write( '../data/imgs/train/'+patientId+'.png' +'\n')
+    if data['patientId'].iloc[i] != patientId:
+        patientId = data['patientId'].iloc[i]
+        # relative to the path you executive train.py of yolov5
+        txt_outfile.write( '../data/imgs/train/'+patientId+'.png' +'\n')
 
 print("finish!")
