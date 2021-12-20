@@ -1,29 +1,29 @@
-import glob
 import pandas as pd
-import os
 import json
-import cv2
+import os
+from tqdm import tqdm
 from pycocotools import mask as cocomask
 
 category_ids = {
     "Lung_Opacity": 1,
 }
 
-
-def images_annotations_info(file, image_id, annotations, annotation_id, data_info):
-    x = data_info['x'].iloc[0]
-    y = data_info['y'].iloc[0]
-    w = data_info['width'].iloc[0]
-    h = data_info['height'].iloc[0]
-    annotation = {
-        "area": w*h,
-        "iscrowd": 0,
-        "image_id": image_id,
-        'bbox': [x, y, w, h],
-        "category_id": category_id,
-        "id": annotation_id
-    }
-    annotations.append(annotation)
+def images_annotations_info(image_id, annotations, data_info):
+    for i in range(len(data_info)):
+        if(data_info['Target'].iloc[i]):
+            x = data_info['x'].iloc[i]
+            y = data_info['y'].iloc[i]
+            w = data_info['width'].iloc[i]
+            h = data_info['height'].iloc[i]
+            annotation = {
+                "area": w*h,
+                "iscrowd": 0,
+                "image_id": image_id,
+                'bbox': [x, y, w, h],
+                "category_id": category_id,
+                "id": len(annotations)
+            }
+            annotations.append(annotation)
 
     return annotations
 
@@ -74,7 +74,6 @@ if __name__ == "__main__":
     data = pd.read_csv(r'./data/stage_2_train_labels.csv')
     print("preparing train.json")
     image_id = 1
-    annotation_id = 1
     coco_format = get_coco_json_format()
     coco_format["categories"] = create_category_annotation(category_ids)
     coco_format["images"] = []
@@ -82,18 +81,17 @@ if __name__ == "__main__":
     w = 1024
     h = 1024
     category_id = 1
-    for file in allFileList:
+
+    for file in tqdm(allFileList):
         img_info = create_image_annotation(
             file, w, h, image_id)
         coco_format["images"].append(img_info)
 
         img_name = file[:-4]
         data_info = data[data['patientId'] == img_name]
-        if(data_info['Target'].iloc[0]):
-            coco_format["annotations"] = images_annotations_info(
-                file, image_id, coco_format["annotations"], annotation_id, data_info)
-            annotation_id = annotation_id+1
-        image_id = image_id+1
+        coco_format["annotations"] = images_annotations_info(
+            image_id, coco_format["annotations"], data_info)
+        image_id += 1
 
     with open("./data/{}.json".format("train"), "w") as outfile:
         json.dump(coco_format, outfile, indent=4)
