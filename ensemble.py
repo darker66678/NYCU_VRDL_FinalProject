@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 
 
-def GeneralEnsemble(dets, iou_thresh, weights=None):
+def GeneralEnsemble(dets, iou_thresh, weights):
     assert(type(iou_thresh) == float)
 
     ndets = len(dets)
@@ -176,7 +176,7 @@ if __name__ == "__main__":
                 det = total_data[num][index].tolist()
                 dets.append(det)
         # too much nan
-        if(no_det >= int(len(total_data[0]))*args.ens_thr):
+        if(no_det >= int(len(file_list)*args.ens_thr)):
             continue
         else:
             ens = GeneralEnsemble(dets, args.iou_thr, weights=weights)
