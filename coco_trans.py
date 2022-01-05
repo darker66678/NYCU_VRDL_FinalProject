@@ -8,6 +8,7 @@ category_ids = {
     "Lung_Opacity": 1,
 }
 
+
 def images_annotations_info(image_id, annotations, data_info):
     for i in range(len(data_info)):
         if(data_info['Target'].iloc[i]):
@@ -56,6 +57,7 @@ def create_category_annotation(category_dict):
 
 
 def create_image_annotation(file_name, width, height, image_id):
+
     images = {
         "file_name": file_name,
         "height": height,
@@ -71,8 +73,58 @@ if __name__ == "__main__":
     path = './data/imgs/train/'
     csv_path = './data/stage_2_train_labels.csv'
     allFileList = os.listdir(path)
+    train_num = int(0.95 * len(allFileList))
+    val_num = len(allFileList)-train_num
     data = pd.read_csv(r'./data/stage_2_train_labels.csv')
     print("preparing train.json")
+    image_id = 1
+    val_id = 1
+    coco_format = get_coco_json_format()
+    coco_format["categories"] = create_category_annotation(category_ids)
+    coco_format["images"] = []
+    coco_format["annotations"] = []
+
+    val_format = get_coco_json_format()
+    val_format["categories"] = create_category_annotation(category_ids)
+    val_format["images"] = []
+    val_format["annotations"] = []
+
+    w = 1024
+    h = 1024
+    category_id = 1
+
+    for file in tqdm(allFileList):
+        if(file[-3:] == "png"):
+            if(image_id >= int(26684*0.95)):
+                img_name = file[:-4]
+                data_info = data[data['patientId'] == img_name]
+                # if(data_info['Target'].iloc[0] == 1):
+                img_info = create_image_annotation(
+                    file, w, h, val_id)
+                val_format["images"].append(img_info)
+                val_format["annotations"] = images_annotations_info(
+                    val_id, coco_format["annotations"], data_info)
+                val_id += 1
+            else:
+                img_name = file[:-4]
+                data_info = data[data['patientId'] == img_name]
+                # if(data_info['Target'].iloc[0] == 1):
+                img_info = create_image_annotation(
+                    file, w, h, image_id)
+                coco_format["images"].append(img_info)
+                coco_format["annotations"] = images_annotations_info(
+                    image_id, coco_format["annotations"], data_info)
+                image_id += 1
+
+    with open("./data/{}.json".format("train_all"), "w") as outfile:
+        json.dump(coco_format, outfile, indent=4)
+        print(f"train:{len(coco_format)}")
+
+    with open("./data/{}.json".format("val_all"), "w") as outfile:
+        json.dump(val_format, outfile, indent=4)
+        print(f"val:{len(val_format)}")
+
+    '''print("preparing val.json")
     image_id = 1
     coco_format = get_coco_json_format()
     coco_format["categories"] = create_category_annotation(category_ids)
@@ -82,7 +134,7 @@ if __name__ == "__main__":
     h = 1024
     category_id = 1
 
-    for file in tqdm(allFileList):
+    for file in tqdm(allFileList[train_num:train_num+val_num]):
         img_info = create_image_annotation(
             file, w, h, image_id)
         coco_format["images"].append(img_info)
@@ -93,25 +145,28 @@ if __name__ == "__main__":
             image_id, coco_format["annotations"], data_info)
         image_id += 1
 
-    with open("./data/{}.json".format("train"), "w") as outfile:
+    with open("./data/{}.json".format("val"), "w") as outfile:
         json.dump(coco_format, outfile, indent=4)
         print("finish!!")
+'''
+    print('preparing test.json')
 
-    '''# validation data
-    print("preparing val.json")
-    image_id = 1
-    annotation_id = 1
     coco_format = get_coco_json_format()
     coco_format["categories"] = create_category_annotation(category_ids)
     coco_format["images"] = []
     coco_format["annotations"] = []
+    w = 1024
+    h = 1024
+    category_id = 1
+    test_csv = pd.read_csv(r'./data/stage_2_sample_submission.csv')
+    test_list = list(test_csv['patientId'])
+    for file in tqdm(test_list):
+        filename = file+'.png'
 
-    file = allFileList[-1]
-    mask_path = f'./nucleus/train/{file}/masks/'
-    coco_format["images"], coco_format["annotations"], annotation_id = images_annotations_info(
-        mask_path, file, image_id, coco_format["annotations"], coco_format["images"], annotation_id)
-    image_id = image_id+1
+        img_info = create_image_annotation(
+            filename, w, h, file)
+        coco_format["images"].append(img_info)
 
-    with open("./mmdetection/nucleus/{}.json".format("val"), "w") as outfile:
+    with open("./data/{}.json".format("test"), "w") as outfile:
         json.dump(coco_format, outfile, indent=4)
-        print("finish!!")'''
+        print("finish!!")

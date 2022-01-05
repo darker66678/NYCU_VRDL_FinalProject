@@ -134,8 +134,10 @@ data/stage_2_train_images
 data/*.txt
 data/*.json
 data/*.csv
-mmdetection/*
-yolo_v5/*
 train/*
 data/*
 *zip
+yolo_v5/runs
+yolo_v5/*.pt
+json
+ensemble/*

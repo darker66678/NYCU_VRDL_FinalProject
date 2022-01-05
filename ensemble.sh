@@ -1,2 +1,2 @@
-python ensemble.py --weights 0.2 0.2 0.15 0.08 0.15 0.2 --conf_thr 0.14 --ens_thr 0.2 --iou_thr 0.01
+python ensemble.py  --conf_thr 0.4 --ens_thr 0.5 --iou_thr 0.0001
 zip ens.zip ensemble.csv

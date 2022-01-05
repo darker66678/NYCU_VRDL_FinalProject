@@ -1,0 +1,7 @@
+path: ./data
+train: ./cfg/train_posi.txt
+val: ./cfg/test.txt
+#val: ./cfg/test.txt
+# Classes
+nc: 1 # number of classes
+names: ["Lung_opacity"] # class names

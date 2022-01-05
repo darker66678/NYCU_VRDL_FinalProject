@@ -2,3 +2,5 @@ pydicom
 matplotlib
 opencv-python
 pandas
+tqdm
+pycocotools
