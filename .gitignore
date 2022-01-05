@@ -140,4 +140,4 @@ data/*
 yolo_v5/runs
 yolo_v5/*.pt
 json
-ensemble/*
+ensemble/*.csv
