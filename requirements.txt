@@ -1,6 +1,13 @@
 pydicom
-matplotlib
-opencv-python
 pandas
-tqdm
 pycocotools
+matplotlib>=3.2.2
+numpy>=1.18.5
+opencv-python>=4.1.2
+Pillow>=7.1.2
+PyYAML>=5.3.1
+requests>=2.23.0
+scipy>=1.4.1
+tqdm>=4.41.0
+seaborn
+tensorboard>=2.4.1

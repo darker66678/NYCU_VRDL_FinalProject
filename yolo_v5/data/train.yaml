@@ -1,6 +1,6 @@
 path: ./data
-train: ./cfg/train_posi.txt
-val: ./cfg/val_posi.txt
+train: ./cfg/train.txt
+val: ./cfg/val.txt
 #val: ./cfg/test.txt
 # Classes
 nc: 1 # number of classes
