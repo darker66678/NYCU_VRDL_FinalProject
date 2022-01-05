@@ -135,9 +135,11 @@ data/*.txt
 data/*.json
 data/*.csv
 train/*
-data/*
+data/!ensemble_txt
 *zip
 yolo_v5/runs
 yolo_v5/*.pt
 json
 ensemble/*.csv
+yolo_v5/*.json
+yolo_v5/*.csv

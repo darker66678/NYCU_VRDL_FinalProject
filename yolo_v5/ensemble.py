@@ -11,8 +11,8 @@ def GeneralEnsemble(dets, iou_thresh, weights):
     ndets = len(dets)
 
     if weights is None:
-        w = 1/float(ndets)
-        weights = [w]*ndets
+        w = 1 / float(ndets)
+        weights = [w] * ndets
     else:
         assert(len(weights) == ndets)
 
@@ -75,27 +75,27 @@ def GeneralEnsemble(dets, iou_thresh, weights):
                     wsum += w
 
                     b = bb[0]
-                    xc += w*b[1]
-                    yc += w*b[2]
-                    bw += w*b[3]
-                    bh += w*b[4]
-                    conf += w*b[0]
+                    xc += w * b[1]
+                    yc += w * b[2]
+                    bw += w * b[3]
+                    bh += w * b[4]
+                    conf += w * b[0]
 
                 xc /= wsum
                 yc /= wsum
                 bw /= wsum
                 bh /= wsum
 
-                new_box = [conf, xc, yc, bw*0.97, bh*0.97]
+                new_box = [conf, xc, yc, bw * 0.975, bh * 0.975]
                 out.append(new_box)
     return out
 
 
 def getCoords(box):
-    x1 = float(box[1]) - float(box[3])/2
-    x2 = float(box[1]) + float(box[3])/2
-    y1 = float(box[2]) - float(box[4])/2
-    y2 = float(box[2]) + float(box[4])/2
+    x1 = float(box[1]) - float(box[3]) / 2
+    x2 = float(box[1]) + float(box[3]) / 2
+    y1 = float(box[2]) - float(box[4]) / 2
+    y2 = float(box[2]) + float(box[4]) / 2
     return x1, x2, y1, y2
 
 
@@ -134,7 +134,7 @@ if __name__ == "__main__":
     # weights
     if(args.weights == None):
         weights = []
-        wei = 1/len(file_list)
+        wei = 1 / len(file_list)
         for i in range(len(file_list)):
             weights.append(wei)
     else:
@@ -152,7 +152,7 @@ if __name__ == "__main__":
                 if(len(dec) % 5 == 1):
                     dec = dec[:-1]
                 dec = [float(item) for item in dec]
-                dec_num = len(dec)//5
+                dec_num = len(dec) // 5
                 dec = np.array(dec, dtype=float).reshape(dec_num, 5)
                 data['PredictionString'].iloc[index] = dec
         total_data.append(list(data['PredictionString']))
@@ -176,7 +176,7 @@ if __name__ == "__main__":
                 det = total_data[num][index].tolist()
                 dets.append(det)
         # too much nan
-        if(no_det >= int(len(file_list)*args.ens_thr)):
+        if(no_det >= int(len(file_list) * args.ens_thr)):
             continue
         else:
             ens = GeneralEnsemble(dets, args.iou_thr, weights=weights)

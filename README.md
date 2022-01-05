@@ -69,7 +69,11 @@ you can alter info of yolov5_train.sh
 * Run ```sh model.sh train``` to train Retinanet model
 
 ## Inference(Ensemble model)
-* Download [YOLOv5_ensemble models](https://drive.google.com/drive/folders/17XVlzGk8IsewBAYclwyTfMWlMQ_97A6L)
+* We take 5 YOLOv5 models for ensemble 
+* Download [YOLOv5_ensemble models](https://drive.google.com/drive/folders/17XVlzGk8IsewBAYclwyTfMWlMQ_97A6L) and put models in ```./yolo_v5``` 
+* Run ```sh inference.sh test inference``` for generating ensemble result
+* ```./yolo_v5/ensemble.zip```  is final answer, upload to [Kaggle](https://www.kaggle.com/c/rsna-pneumonia-detection-challenge/submit), it can get 0.17222
+
 ## Pre-trained model
 * [Retinanet_pretrained model](https://download.openmmlab.com/mmdetection/v2.0/retinanet/retinanet_x101_64x4d_fpn_mstrain_3x_coco/retinanet_x101_64x4d_fpn_mstrain_3x_coco_20210719_051838-022c2187.pth) 
 * [YOLOv5_ensemble models](https://drive.google.com/drive/folders/17XVlzGk8IsewBAYclwyTfMWlMQ_97A6L)
@@ -78,7 +82,7 @@ you can alter info of yolov5_train.sh
 |---|--|---|---|---|---|---|
 |Ian Pan & Alexandre Cadrin (1st)|O|O|O|O|Inception ResnetV2,Deformable Relation Networks|0.25475
 |Phillip Cheng (3rd)|X|X|O|O|Retina-50/101|0.23908
-|Ours|X|X|O|O|YOLOv5|0.17206
+|Ours|X|X|O|O|YOLOv5|0.17222
 
 
 

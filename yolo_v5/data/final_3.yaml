@@ -1,0 +1,6 @@
+path: ../data/ensemble_txt/
+train: train_3.txt
+val: val_3.txt
+test: test.txt
+nc: 1
+names: ["target"]
