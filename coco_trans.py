@@ -116,11 +116,11 @@ if __name__ == "__main__":
                     image_id, coco_format["annotations"], data_info)
                 image_id += 1
 
-    with open("./data/{}.json".format("train_all"), "w") as outfile:
+    with open("./data/{}.json".format("train"), "w") as outfile:
         json.dump(coco_format, outfile, indent=4)
         print(f"train:{len(coco_format)}")
 
-    with open("./data/{}.json".format("val_all"), "w") as outfile:
+    with open("./data/{}.json".format("val"), "w") as outfile:
         json.dump(val_format, outfile, indent=4)
         print(f"val:{len(val_format)}")
 

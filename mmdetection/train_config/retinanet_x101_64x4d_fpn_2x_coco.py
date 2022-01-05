@@ -68,8 +68,8 @@ data = dict(
     workers_per_gpu=1,
     train=dict(
         type='CocoDataset',
-        ann_file='./data/train_all.json',
-        img_prefix='./data/imgs/train/',
+        ann_file='../data/train.json',
+        img_prefix='../data/imgs/train/',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='LoadAnnotations', with_bbox=True),
@@ -87,8 +87,8 @@ data = dict(
         ]),
     val=dict(
         type='CocoDataset',
-        ann_file='./data/val_all.json',
-        img_prefix='./data/imgs/train/',
+        ann_file='../data/val.json',
+        img_prefix='../data/imgs/train/',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(
@@ -110,8 +110,8 @@ data = dict(
         ]),
     test=dict(
         type='CocoDataset',
-        ann_file='./data/test.json',
-        img_prefix='./data/imgs/test/',
+        ann_file='../data/test.json',
+        img_prefix='../data/imgs/test/',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(

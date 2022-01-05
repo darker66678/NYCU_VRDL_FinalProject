@@ -1,5 +1,5 @@
 if [ $1 == "train" ]; then
-    python tools/train.py /home/tylin/vscode/VRDL/NYCU_VRDL_FinalProject/mmdetection/train_config/yolox/yolox_s_8x8_300e_coco.py
+    python tools/train.py ./train_config/retinanet_x101_64x4d_fpn_2x_coco.py
 elif [ $1 == "test" ]; then
     python tools/test.py  $2  $3 --format-only --options "jsonfile_prefix=./$4" 
 elif [ $1 == "show" ]; then
